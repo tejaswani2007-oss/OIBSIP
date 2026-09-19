@@ -5,11 +5,13 @@ A secure command-line password generator for the OIBSIP Python task.
 ## Features
 
 - Uses Python's `secrets` module for secure random values
-- Configurable password length
+- Requires a minimum password length of 8 characters
 - Optional uppercase letters, lowercase letters, numbers, and symbols
+- Requires at least two selected character types
 - Ensures every selected character type appears at least once
 - Avoids ambiguous characters such as `I`, `l`, `1`, `O`, and `0`
 - Displays a simple strength estimate
+- Allows another password to be generated without restarting
 
 ## Run
 

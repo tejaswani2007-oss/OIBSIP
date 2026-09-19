@@ -46,10 +46,10 @@ def generate_password(
     if include_symbols:
         selected_groups.append("!@#$%^&*()-_=+[]{}?/")
 
-    if length < 4:
-        raise ValueError("Password length must be at least 4.")
-    if not selected_groups:
-        raise ValueError("Select at least one character type.")
+    if length < 8:
+        raise ValueError("Password length must be at least 8.")
+    if len(selected_groups) < 2:
+        raise ValueError("Select at least two character types.")
     if length < len(selected_groups):
         raise ValueError("Length must cover every selected character type.")
 
@@ -88,24 +88,28 @@ def main() -> None:
     print("\nSECURE PASSWORD GENERATOR")
     print("Use a password manager to store generated passwords.\n")
 
-    try:
-        length = int(input("Password length (default 16): ").strip() or "16")
-        use_uppercase = ask_yes_no("Include uppercase letters? (Y/n): ")
-        use_lowercase = ask_yes_no("Include lowercase letters? (Y/n): ")
-        use_digits = ask_yes_no("Include numbers? (Y/n): ")
-        use_symbols = ask_yes_no("Include symbols? (Y/n): ")
-        password = generate_password(
-            length,
-            use_uppercase,
-            use_lowercase,
-            use_digits,
-            use_symbols,
-        )
-        selected_types = sum((use_uppercase, use_lowercase, use_digits, use_symbols))
-        print(f"\nPassword: {password}")
-        print(f"Strength: {password_strength(length, selected_types)}")
-    except ValueError as error:
-        print(f"Error: {error}")
+    while True:
+        try:
+            length = int(input("Password length (default 16): ").strip() or "16")
+            use_uppercase = ask_yes_no("Include uppercase letters? (Y/n): ")
+            use_lowercase = ask_yes_no("Include lowercase letters? (Y/n): ")
+            use_digits = ask_yes_no("Include numbers? (Y/n): ")
+            use_symbols = ask_yes_no("Include symbols? (Y/n): ")
+            password = generate_password(
+                length,
+                use_uppercase,
+                use_lowercase,
+                use_digits,
+                use_symbols,
+            )
+            selected_types = sum((use_uppercase, use_lowercase, use_digits, use_symbols))
+            print(f"\nPassword: {password}")
+            print(f"Strength: {password_strength(length, selected_types)}")
+        except ValueError as error:
+            print(f"Error: {error}")
+
+        if not ask_yes_no("Generate another password? (y/N): ", default=False):
+            break
 
 
 if __name__ == "__main__":
